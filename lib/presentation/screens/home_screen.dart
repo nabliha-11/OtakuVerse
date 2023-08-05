@@ -4,12 +4,13 @@ import '../../data/models/anime.dart';
 import '../../data/repositories/anime_repository.dart';
 import '../widgets/anime_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widgets/search_bar.dart';
 import 'anime_details_screen.dart';
 import 'anime_screen.dart';
+import 'manga_details_screen.dart';
 import 'manga_screen.dart';
 import 'package:provider/provider.dart';
-
+import '../../data/models/manga.dart';
+import '../widgets/manga_card.dart';
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -35,37 +36,55 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Consumer<AnimeProvider>(
         builder: (context, _animeProvider, _) {
-         return Column(
-           children: [
-             Expanded(
-               child: ListView(
-                 children: [
-                   // Rectangular cards for Anime and Manga
-                   _buildTopSection(),
+          return Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  children: [
+                    // Rectangular cards for Anime and Manga
+                    _buildTopSection(),
 
-                   // Newly Released Anime Section
-                   _buildSectionHeader('Continue Watching...'),
-                  _animeProvider.isloadingAnime==false? _buildHorizontalSlider(_animeProvider.newlyReleasedAnimeList):Center(child: const CircularProgressIndicator()),
+                    // Newly Released Anime Section
+                    _buildSectionHeader('Continue Watching...'),
+                    _animeProvider.isloadingAnime == false
+                        ? _buildAnimeSlider(_animeProvider.newlyReleasedAnimeList)
+                        : Center(child: const CircularProgressIndicator()),
 
-                   // Newly Released Manga Section
-                   _buildSectionHeader('Continue Reading...'),
-                   _animeProvider.isloadingManga==false? _buildHorizontalSlider(_animeProvider.newlyReleasedMangaList):Center(child: const CircularProgressIndicator()),
+                    // Newly Released Manga Section
+                    _buildSectionHeader('Continue Reading...'),
+                    _animeProvider.isloadingManga == false
+                        ? _buildMangaSlider(_animeProvider.newlyReleasedMangaList)
+                        : Center(child: const CircularProgressIndicator()),
 
-                   // Popular Anime List Section
-                   _buildSectionHeader('Recommended'),
-                   _animeProvider.isloadingManga==false? Column(
-                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                     children: _animeProvider.popularAnimeList
-                         .map((anime) => AnimeCard(anime: anime))
-                         .toList(),
-                   ):Center(child: const CircularProgressIndicator()),
-                 ],
-               ),
-             ),
-           ],
-         );
+                    // Popular Anime List Section
+                    _buildSectionHeader('Recommended'),
+                    _animeProvider.isloadingManga == false
+                        ? Column(
+                      //crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: _animeProvider.popularAnimeList
+                          .map((anime) => AnimeCard(
+                        anime: anime,
+                        isRectangular: true,
+                        onPressed: () {
+                          // Add your onPressed function logic here
+                          // For example, you can navigate to the anime details screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AnimeDetailsScreen(anime: anime),
+                            ),
+                          );
+                        },
+                      ))
+                          .toList(),
+                    )
+                        : Center(child: const CircularProgressIndicator()),
+                  ],
+                ),
+              ),
+            ],
+          );
         },
-
       ),
     );
   }
@@ -134,7 +153,27 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildHorizontalSlider(List<Anime> animeList) {
+  Widget _buildMangaSlider(List<Manga> mangaList) {
+
+    return Container(
+      height: 200.h,
+      width: double.infinity,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: mangaList.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: MangaCard(manga: mangaList[index], onPressed: () {
+                _openMangaDetailsScreen(context,mangaList[index]);
+            }),
+          );
+        },
+      ),
+    );
+  }
+  Widget _buildAnimeSlider(List<Anime> animeList) {
 
     return Container(
       height: 200.h,
@@ -147,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: AnimeCard(anime: animeList[index], onPressed: () {
-                _openAnimeDetailsScreen(context,animeList[index]);
+              _openAnimeDetailsScreen(context,animeList[index]);
             }),
           );
         },
@@ -160,6 +199,14 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => AnimeDetailsScreen(anime: anime),
+      ),
+    );
+  }
+  void _openMangaDetailsScreen(BuildContext context, Manga manga) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MangaDetailsScreen(manga: manga),
       ),
     );
   }

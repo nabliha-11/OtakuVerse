@@ -50,15 +50,15 @@ List<Anime> newlyReleasedAnimeListDB = [
     posterUrl: 'https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg',
   ),
 ];
-List<Anime> newlyReleasedMangaListDB = [
-  Anime(
-    id: '1',
-    title: 'Jujutsu Kaisen',
-    description: 'Yuuji Itadori joins the Jujutsu High School.',
-    posterUrl: 'https://m.media-amazon.com/images/I/71+HW7-kq2L._AC_UF1000,1000_QL80_.jpg',
-  ),
-// Add more newly released manga data here
-];
+// List<Anime> newlyReleasedMangaListDB = [
+//   Anime(
+//     id: '1',
+//     title: 'Jujutsu Kaisen',
+//     description: 'Yuuji Itadori joins the Jujutsu High School.',
+//     posterUrl: 'https://m.media-amazon.com/images/I/71+HW7-kq2L._AC_UF1000,1000_QL80_.jpg',
+//   ),
+// // Add more newly released manga data here
+// ];
 List<Anime> popularAnimeListDB = [
   Anime(
     id: '1',
@@ -71,6 +71,6 @@ List<Anime> popularAnimeListDB = [
     id: '2',
     title: 'HunterXHunter',
     description: 'Hunter × Hunter is an anime television series that aired from 2011 to 2014 based on Yoshihiro Togashi\'s manga series Hunter × Hunter.',
-    posterUrl: 'https://m.media-amazon.com/images/M/MV5BNGM0YTk3MWEtN2JlZC00ZmZmLWIwMDktZTMxZGE5Zjc2MGExXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_.jpg',
+    posterUrl: 'https://www.comingsoon.net/wp-content/uploads/sites/3/2023/07/Hunter-X-Hunter.jpe',
   ),
 ];

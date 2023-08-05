@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import '../../../data/models/anime.dart';
+import '../../../data/models/manga.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AnimeCard extends StatelessWidget {
-  final Anime anime;
+class MangaCard extends StatelessWidget {
+  final Manga manga;
   final Function()? onPressed;
   final bool isRectangular;
   final double imageHeight; // Add a parameter for specifying image height
 
-  const AnimeCard({
-    required this.anime,
+  const MangaCard({
+    required this.manga,
     this.onPressed,
     this.isRectangular = false,
     this.imageHeight = 60.0, // Default image height for standard card shape
@@ -33,7 +33,7 @@ class AnimeCard extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: Image.network(
-                  anime.posterUrl,
+                  manga.posterUrl,
                   fit: BoxFit.cover,
                   height: imageHeight, // Use the specified image height
                   width: isRectangular ? double.infinity : 100.w,
@@ -41,12 +41,12 @@ class AnimeCard extends StatelessWidget {
               ),
               SizedBox(height: 8.h),
               Text(
-                anime.title,
+                manga.title,
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
               Text(
-                anime.description,
+                manga.description,
                 maxLines: 2,
                 style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w200),
                 overflow: TextOverflow.ellipsis,

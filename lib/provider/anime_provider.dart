@@ -1,13 +1,13 @@
-
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:otakuverse/data/models/anime.dart';
+import 'package:otakuverse/data/models/manga.dart';
 
 class AnimeProvider extends ChangeNotifier{
-  List<Anime> _newlyReleasedMangaList = [];
-  List<Anime> get newlyReleasedMangaList => _newlyReleasedMangaList;
+
+  List<Manga> _newlyReleasedMangaList = [];
+  List<Manga> get newlyReleasedMangaList => _newlyReleasedMangaList;
 
   List<Anime> _newlyReleasedAnimeList = [];
   List<Anime> get newlyReleasedAnimeList => _newlyReleasedAnimeList;
