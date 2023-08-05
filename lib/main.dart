@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:otakuverse/presentation/screens/bottom_navigation_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:otakuverse/presentation/screens/splash_screen.dart';
 import 'package:otakuverse/provider/anime_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple),
             // Add any other theme customization you may want
           ),
-          home: BottomNavigationScreen(),
+          home:SplashScreen(),
           builder: (context, child) {
             return Container(
               decoration: BoxDecoration(
