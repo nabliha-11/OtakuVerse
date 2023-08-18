@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:otakuverse/provider/anime_provider.dart';
 import '../../data/models/anime.dart';
-import '../../data/repositories/anime_repository.dart';
 import '../widgets/anime_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'anime_details_screen.dart';
@@ -26,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     provider.getNewReleaseAnime();
     provider.getNewReleaseManga();
     provider.getPopularAnime();
+    provider.getUpcomingAnime();
   }
 
   @override

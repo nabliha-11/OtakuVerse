@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:otakuverse/provider/anime_provider.dart'; // Import your AnimeProvider class
+import 'package:otakuverse/data/models/anime.dart'; // Import your Anime model class
+import 'package:otakuverse/presentation/widgets/anime_card.dart';
+import 'anime_details_screen.dart';
+
 
 class AnimeDemo {
   final String name;
@@ -25,6 +31,8 @@ class AnimeScreen extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    final _animeProvider = Provider.of<AnimeProvider>(context);
+
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -42,7 +50,7 @@ class AnimeScreen extends StatelessWidget {
                   // Blurry Background for Top Section
                   PageView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: demoAnimeList.length,
+                    itemCount: _animeProvider.upcomingAnimeList.length,
                     itemBuilder: (context, index) {
                       return Image.network(
                         'https://wallpaper.dog/large/606621.jpg',
@@ -81,7 +89,7 @@ class AnimeScreen extends StatelessWidget {
                       height: 200,
                       child: PageView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: demoAnimeList.length,
+                        itemCount: _animeProvider.upcomingAnimeList.length,
                         itemBuilder: (context, index) {
                           return Container(
                             width: 150,
@@ -90,15 +98,26 @@ class AnimeScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  demoAnimeList[index].name,
-                                  style: TextStyle(fontSize: 20, color: Colors.white),
+                                  _animeProvider.upcomingAnimeList[index].title,
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
                                 ),
                                 SizedBox(height: 8),
-                                Image.network(
-                                  demoAnimeList[index].imageUrl,
+                                Container(
                                   width: 100,
                                   height: 150,
-                                  fit: BoxFit.cover,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.white, // Border color
+                                      width: 2, // Border width
+                                    ),
+                                  ),
+                                  child: ClipRRect(
+                                    child:Image.network(
+                                      _animeProvider.upcomingAnimeList[index].posterUrl,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -109,14 +128,14 @@ class AnimeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-             // pinned: true,
+              // pinned: true,
               floating: true,
               snap: true,
             ),
             SliverToBoxAdapter(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Text(
                   'Recently Updated',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -124,28 +143,12 @@ class AnimeScreen extends StatelessWidget {
               ),
             ),
             SliverToBoxAdapter(
-              child: Container(
-                height: 200,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: 150,
-                      color: Colors.blueGrey,
-                      margin: EdgeInsets.symmetric(horizontal: 8),
-                      child: Center(
-                        child: Text('Recently Updated Anime ${index + 1}'),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              child: _buildAnimeSlider(_animeProvider.newlyReleasedAnimeList),
             ),
             SliverToBoxAdapter(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Text(
                   'Popular Anime',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -154,17 +157,23 @@ class AnimeScreen extends StatelessWidget {
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return Container(
-                    height: 200,
-                    color: Colors.green,
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    child: Center(
-                      child: Text('Popular Anime ${index + 1}'),
-                    ),
+                    (context, index) {
+                  final anime = _animeProvider.popularAnimeList[index];
+                  return AnimeCard(
+                    anime: anime,
+                    isRectangular: true,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AnimeDetailsScreen(anime: anime),
+                        ),
+                      );
+                    },
                   );
                 },
-                childCount: 20,
+                childCount: _animeProvider.popularAnimeList.length,
               ),
             ),
           ],
@@ -172,4 +181,34 @@ class AnimeScreen extends StatelessWidget {
       ),
     );
   }
+  Widget _buildAnimeSlider(List<Anime> animeList) {
+    return Container(
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: animeList.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: AnimeCard(
+              anime: animeList[index],
+              isRectangular: false, // Use rectangular cards for slider
+              onPressed: () {
+                // Implement the onPressed action for the AnimeCard here
+                // For example, navigate to anime details screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        AnimeDetailsScreen(anime: animeList[index]),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
+

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "905371447196",
+    "project_id": "otakuverse-afe63",
+    "storage_bucket": "otakuverse-afe63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905371447196:android:28707b7703900f64486259",
+        "android_client_info": {
+          "package_name": "com.example.otakuverse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "905371447196-gkuujlvchs3v9lb6jrhi018m37apd015.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtExO2PUu9SPmujwjLj0qwroT6wkR5aKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "905371447196-gkuujlvchs3v9lb6jrhi018m37apd015.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

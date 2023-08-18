@@ -60,6 +60,11 @@ dependencies:
   url_launcher_android: 6.0.27
   url_launcher_ios: 6.1.4
   url_launcher_platform_interface: 2.1.2
+  http:
+  firebase_core:
+  firebase_auth:
+  firebase_storage:
+  cloud_firestore:
 
 
   # The following adds the Cupertino Icons font to your application.
