@@ -1,7 +1,8 @@
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:otakuverse/presentation/screens/watch_screen.dart';
 import '../../data/models/anime.dart';
-
+import 'package:expandable/expandable.dart';
 class AnimeDetailsScreen extends StatelessWidget {
   final Anime anime;
 
@@ -25,9 +26,14 @@ class AnimeDetailsScreen extends StatelessWidget {
                 Positioned(
                   bottom: 16,
                   left: 16,
-                  child: Text(
-                    anime.title,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width-32,
+                    child: Text(
+                      anime.title,
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
                 Positioned(
@@ -45,8 +51,8 @@ class AnimeDetailsScreen extends StatelessWidget {
                         Icon(Icons.star, color: Colors.yellow, size: 18),
                         SizedBox(width: 4),
                         Text(
-                          '4.6/5.0',
-                          //anime.rating.toString(),
+                          //'4.6/5.0',
+                          anime.rating.toString(),
                           style: TextStyle(fontSize: 14, color: Colors.white),
                         ),
                       ],
@@ -70,15 +76,17 @@ class AnimeDetailsScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 8),
-                  Text(
+                  ExpandableText(
                     anime.description,
-                    style: TextStyle(fontSize: 16),
+                    maxLines: 3,
+                    expandText: 'See more...',
+                    collapseText: 'See less',
                   ),
                   SizedBox(height: 16),
                   Text(
-                      'Total Episodes: 25',
-                    //'Total Episodes: ${anime.totalEpisodes}',
-                    style: TextStyle(fontSize: 16),
+                      //'Total Episodes: 25',
+                    'Total Episodes: ${anime.episodes}',
+                    style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 8),
                   Text(
@@ -126,12 +134,12 @@ class AnimeDetailsScreen extends StatelessWidget {
                     height: 150,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 5, // Replace with the number of characters you want to display
+                      itemCount: anime.characters.length, // Replace with the number of characters you want to display
                       itemBuilder: (context, index) {
                         // Replace the following dummy character details with your actual character data from the API
-                        final characterName = 'Character ${index + 1}';
+                        final characterName = anime.characters[index].name;
                         final characterPhotoUrl =
-                            'https://via.placeholder.com/100'; // Replace with character photo URL
+                            anime.characters[index].image; // Replace with character photo URL
 
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -153,36 +161,11 @@ class AnimeDetailsScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  // Container(
-                  //   height: 150,
-                  //   child: ListView.builder(
-                  //     scrollDirection: Axis.horizontal,
-                  //     itemCount: anime.characters.length,
-                  //     itemBuilder: (context, index) {
-                  //       final character = anime.characters[index];
-                  //       return Padding(
-                  //         padding: const EdgeInsets.all(8.0),
-                  //         child: Column(
-                  //           children: [
-                  //             CircleAvatar(
-                  //               radius: 50,
-                  //               backgroundImage: NetworkImage(character.photo), // Replace with character photo URL
-                  //             ),
-                  //             SizedBox(height: 8),
-                  //             Text(
-                  //               character.name,
-                  //               style: TextStyle(fontSize: 16),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
                 ],
               ),
             ),
           ),
+
         ],
       ),
       floatingActionButton: FloatingActionButton(

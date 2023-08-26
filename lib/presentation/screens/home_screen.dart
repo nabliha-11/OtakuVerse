@@ -26,6 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
     provider.getNewReleaseManga();
     provider.getPopularAnime();
     provider.getUpcomingAnime();
+    provider.getPopularManga();
+    provider.getUpcomingManga();
   }
 
   @override

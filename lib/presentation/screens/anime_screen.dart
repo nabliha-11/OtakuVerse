@@ -14,21 +14,6 @@ class AnimeDemo {
 }
 
 class AnimeScreen extends StatelessWidget {
-  final List<AnimeDemo> demoAnimeList = [
-    AnimeDemo(
-      name: 'Anime 1',
-      imageUrl: 'https://via.placeholder.com/600x400/FF0000/FFFFFF',
-    ),
-    AnimeDemo(
-      name: 'Anime 2',
-      imageUrl: 'https://via.placeholder.com/600x400/00FF00/000000',
-    ),
-    AnimeDemo(
-      name: 'Anime 3',
-      imageUrl: 'https://via.placeholder.com/600x400/0000FF/FFFFFF',
-    ),
-    // Add more demo anime data here
-  ];
   @override
   Widget build(BuildContext context) {
     final _animeProvider = Provider.of<AnimeProvider>(context);
@@ -97,10 +82,17 @@ class AnimeScreen extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  _animeProvider.upcomingAnimeList[index].title,
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
+                                Container(
+                                  width: MediaQuery.of(context).size.width - 32,
+                                  child: Center(
+                                    child: Text(
+                                      _animeProvider.upcomingAnimeList[index].title,
+                                      style: TextStyle(
+                                          fontSize: 20, color: Colors.white),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(height: 8),
                                 Container(

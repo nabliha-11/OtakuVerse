@@ -27,6 +27,29 @@ class AnimeService {
             trailer {
               id
             }
+             characters {
+          nodes {
+            id
+            name {
+              full
+            }
+            image {
+              large
+            }
+          }
+        }
+        staff {
+          nodes {
+            id
+            name {
+              full
+            }
+            image {
+              large
+            }
+            primaryOccupations
+          }
+        }
           }
         }
       }
@@ -66,6 +89,30 @@ class AnimeService {
             trailer {
               id
             }
+             staff {
+          nodes {
+            id
+            primaryOccupations
+            name {
+              full
+            }
+            image {
+              large
+            }
+          }
+        }
+            characters {
+          nodes {
+            id
+            name {
+              full
+            }
+            image {
+              large
+            }
+          }
+        }
+       
           }
         }
       }
@@ -76,6 +123,7 @@ class AnimeService {
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'query': query}),
     );
+    print(response.body);
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body)['data']['Page']['media'];
@@ -109,6 +157,17 @@ class AnimeService {
             trailer {
               id
             }
+           characters {
+          nodes {
+            id
+            name {
+              full
+            }
+            image {
+              large
+            }
+          }
+        }
           }
         }
       }

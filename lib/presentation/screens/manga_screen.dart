@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:otakuverse/provider/anime_provider.dart'; // Import your AnimeProvider class
+import 'package:otakuverse/data/models/manga.dart'; // Import your Anime model class
+import 'package:otakuverse/presentation/widgets/manga_card.dart';
+import 'manga_details_screen.dart';
 
 class MangaDemo {
   final String name;
@@ -8,23 +13,9 @@ class MangaDemo {
 }
 
 class MangaScreen extends StatelessWidget {
-  final List<MangaDemo> demoMangaList = [
-    MangaDemo(
-      name: 'Manga 1',
-      imageUrl: 'https://via.placeholder.com/600x400/FF0000/FFFFFF',
-    ),
-    MangaDemo(
-      name: 'Manga 2',
-      imageUrl: 'https://via.placeholder.com/600x400/00FF00/000000',
-    ),
-    MangaDemo(
-      name: 'Manga 3',
-      imageUrl: 'https://via.placeholder.com/600x400/0000FF/FFFFFF',
-    ),
-    // Add more demo anime data here
-  ];
   @override
   Widget build(BuildContext context) {
+    final _animeProvider = Provider.of<AnimeProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -42,7 +33,7 @@ class MangaScreen extends StatelessWidget {
                   // Blurry Background for Top Section
                   PageView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: demoMangaList.length,
+                    itemCount: _animeProvider.upcomingMangaList.length,
                     itemBuilder: (context, index) {
                       return Image.network(
                         'https://images.contentstack.io/v3/assets/blt64b2de096a6f4663/blt764d4a0f5e47474c/644053fc793eef21c330beac/popular_manga.png',
@@ -81,7 +72,7 @@ class MangaScreen extends StatelessWidget {
                       height: 200,
                       child: PageView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: demoMangaList.length,
+                        itemCount: _animeProvider.upcomingMangaList.length,
                         itemBuilder: (context, index) {
                           return Container(
                             width: 150,
@@ -89,16 +80,32 @@ class MangaScreen extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  demoMangaList[index].name,
-                                  style: TextStyle(fontSize: 20, color: Colors.white),
+                                Container(
+                                  width: MediaQuery.of(context).size.width ,
+                                  child: Center(
+                                    child: Text(
+                                      _animeProvider.upcomingMangaList[index].title,
+                                      style: TextStyle(fontSize: 20, color: Colors.white),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(height: 8),
-                                Image.network(
-                                  demoMangaList[index].imageUrl,
-                                  width: 100,
+                                Container(width: 100,
                                   height: 150,
-                                  fit: BoxFit.cover,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.white, // Border color
+                                      width: 2, // Border width
+                                    ),
+                                  ),
+                                  child: ClipRRect(
+                                    child: Image.network(
+                                      _animeProvider.upcomingMangaList[index].posterUrl,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -124,23 +131,7 @@ class MangaScreen extends StatelessWidget {
               ),
             ),
             SliverToBoxAdapter(
-              child: Container(
-                height: 200,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: 150,
-                      color: Colors.blueGrey,
-                      margin: EdgeInsets.symmetric(horizontal: 8),
-                      child: Center(
-                        child: Text('Trending Manga ${index + 1}'),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              child: _buildMangaSlider(_animeProvider.newlyReleasedMangaList),
             ),
             SliverToBoxAdapter(
               child: Padding(
@@ -155,20 +146,55 @@ class MangaScreen extends StatelessWidget {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                  return Container(
-                    height: 200,
-                    color: Colors.green,
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    child: Center(
-                      child: Text('Popular Manga ${index + 1}'),
-                    ),
+                  final manga = _animeProvider.popularMangaList[index];
+                  return MangaCard(
+                    manga: manga,
+                    isRectangular: true,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              MangaDetailsScreen(manga:manga),
+                        ),
+                      );
+                    },
                   );
                 },
-                childCount: 20,
+                childCount: _animeProvider.popularMangaList.length,
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+  Widget _buildMangaSlider(List<Manga> animeList) {
+    return Container(
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: animeList.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: MangaCard(
+              manga: animeList[index],
+              isRectangular: false, // Use rectangular cards for slider
+              onPressed: () {
+                // Implement the onPressed action for the AnimeCard here
+                // For example, navigate to anime details screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        MangaDetailsScreen(manga: animeList[index]),
+                  ),
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }
